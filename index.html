@@ -134,6 +134,60 @@
   .galaxy-any-toggle select{width:100%; border:1px solid var(--line); border-radius:9px; padding:9px 10px; background:#fff; color:var(--ink); font-size:12px; font-weight:700;}
   .galaxy-any-toggle small{display:block; margin-top:6px; color:var(--slate); font-size:11px; line-height:1.35;}
 
+
+  /* 2.06 progressive step flow */
+  .card.step-locked{
+    opacity:.42;
+    filter:grayscale(.85);
+    pointer-events:none;
+    user-select:none;
+    position:relative;
+  }
+  .card.step-locked::after{
+    content:"Complete the previous step";
+    position:absolute;
+    right:14px;
+    top:14px;
+    padding:5px 9px;
+    border-radius:999px;
+    background:#e8edf2;
+    border:1px solid #cbd5df;
+    color:#6b7785;
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:.02em;
+  }
+  #nextUpCard.step-locked.no-trade-lock::after{
+    content:"Not available without a trade-in phone";
+  }
+  .no-trade-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:10px 0 2px;
+  }
+  .no-trade-btn{
+    border:1.5px solid #b8c7d4;
+    background:#fff;
+    color:var(--ink);
+    border-radius:10px;
+    padding:9px 13px;
+    min-height:40px;
+    font-weight:800;
+    cursor:pointer;
+  }
+  .no-trade-btn[aria-pressed="true"]{
+    background:#eaf6fd;
+    border-color:var(--blue);
+    color:var(--blue);
+    box-shadow:0 0 0 3px rgba(5,104,174,.10);
+  }
+  .no-trade-copy{
+    color:var(--slate);
+    font-size:12px;
+    font-weight:600;
+  }
+
   /* display panel */
   .display{background:linear-gradient(160deg,var(--navy1),var(--navy2)); color:#eaf3fb; border-radius:18px;
     padding:22px 22px 20px; box-shadow:0 10px 30px rgba(7,28,52,.30); position:sticky; bottom:12px;
@@ -487,7 +541,7 @@
       </div>
       <div style="margin-left:auto; text-align:right;">
         <div class="sub" id="releaseMeta">August 2026 &middot; Last Updated 8/12/2026</div>
-        <div class="version" id="versionBadge" title="Tap 5 times for admin">Test Version 2.05</div>
+        <div class="version" id="versionBadge" title="Tap 5 times for admin">Test Version 2.06</div>
         <button id="toolsOpenBtn" class="admin-open-btn tools-open-btn" type="button">☰ Tools</button>
         <button id="adminOpenBtn" class="admin-open-btn" type="button">Admin</button>
       </div>
@@ -566,6 +620,10 @@
           <input id="tradeDeviceSearch" placeholder="Search trade-in phone — or tap for alphabetical list" autocomplete="off" aria-expanded="false" />
           <button id="tradeDeviceClear" type="button">Clear</button>
           <div class="lookup-list" id="tradeDeviceSuggestions"><ul id="tradeDeviceSuggestionsList"></ul></div>
+        </div>
+        <div class="no-trade-row">
+          <button id="noTradeBtn" class="no-trade-btn" type="button" aria-pressed="false">No Trade</button>
+          <span class="no-trade-copy">Choose this if the customer is not trading in a device.</span>
         </div>
         <div class="trade-storage-row" id="tradeStorageRow">
           <select id="tradeStorageSelect" aria-label="Trade-in storage"></select>
@@ -744,7 +802,7 @@
   <div class="whats-new-panel" role="dialog" aria-modal="true" aria-labelledby="whatsNewTitle">
     <div class="whats-new-kicker">Changes since last update</div>
     <h2 id="whatsNewTitle" class="whats-new-title">What’s New</h2>
-    <div class="whats-new-version">Version 2.05</div>
+    <div class="whats-new-version">Version 2.06</div>
     <p class="whats-new-sub">This message appears once for each new published version.</p>
 
     <section class="whats-new-section">
@@ -971,12 +1029,12 @@
       <div class="admin-subhead">Accounts</div>
       <div class="tool-subcard"><b>GitHub repo:</b> GlobalHub9393 / Tradetool<br><b>Cloudflare email:</b> Ts8686@cmcnj.com<br><b>Cloudflare password:</b> Stored separately</div>
       <div class="admin-subhead">Quick Guide — GitHub First</div>
-      <details class="tool-subcard"><summary><b>1. Send ChatGPT the current code and changes</b></summary><p>Upload or reference the current <b>index.html</b> from the GitHub repo. Tell ChatGPT the exact date, that it is still <b>Test Version 2.05</b>, and list the promo, phone, FAQ, layout, or wording changes needed. Ask for an updated <b>index.html</b> file.</p></details>
+      <details class="tool-subcard"><summary><b>1. Send ChatGPT the current code and changes</b></summary><p>Upload or reference the current <b>index.html</b> from the GitHub repo. Tell ChatGPT the exact date, that it is still <b>Test Version 2.06</b>, and list the promo, phone, FAQ, layout, or wording changes needed. Ask for an updated <b>index.html</b> file.</p></details>
       <details class="tool-subcard"><summary><b>2. Download the updated index.html</b></summary><p>Download the updated file from ChatGPT. The main site file must be named exactly <b>index.html</b>. If the file name becomes <b>index.html.txt</b>, <b>GlobalTradeTool_v1_DEV</b>, or anything else, rename it or ask for a corrected file before uploading to GitHub.</p></details>
       <details class="tool-subcard"><summary><b>3. Upload index.html to GitHub</b></summary><p>Open GitHub, go to <b>GlobalHub9393 / Tradetool</b>, tap <b>Add file</b>, then upload the updated <b>index.html</b>. If GitHub asks whether to replace the existing file, replace it. Commit directly to the <b>main</b> branch.</p></details>
       <details class="tool-subcard"><summary><b>4. Commit the change</b></summary><p>Use a simple commit message like <b>Update Global Trade Tool 7/31/2026</b>. Tap <b>Commit changes</b>. GitHub should now show the latest <b>index.html</b> in the file list.</p></details>
       <details class="tool-subcard"><summary><b>5. Cloudflare deployment after GitHub is connected</b></summary><p>Once Cloudflare Pages is linked to this GitHub repo, Cloudflare should automatically create a new deployment from the <b>main</b> branch after every GitHub commit. Go to Cloudflare → <b>Workers &amp; Pages</b> → the Global Trade Tool project → <b>Deployments</b> to confirm the newest deployment completed successfully.</p></details>
-      <details class="tool-subcard"><summary><b>6. Test the live site</b></summary><p>Open <b>globaltradetool.com</b>. Confirm the site opens normally, the header still says <b>Test Version 2.05</b>, the date is correct, the calculator works, More opens, Tools opens, Recent Changes opens, FAQ / Trade Help opens, Admin opens, promos calculate correctly, and tiered offers show correctly.</p></details>
+      <details class="tool-subcard"><summary><b>6. Test the live site</b></summary><p>Open <b>globaltradetool.com</b>. Confirm the site opens normally, the header still says <b>Test Version 2.06</b>, the date is correct, the calculator works, More opens, Tools opens, Recent Changes opens, FAQ / Trade Help opens, Admin opens, promos calculate correctly, and tiered offers show correctly.</p></details>
       <details class="tool-subcard"><summary><b>7. If Cloudflare is not connected yet</b></summary><p>Use the old ZIP/folder upload only as a fallback. Download the Cloudflare folder ZIP from ChatGPT, unzip it in Files, confirm the folder contains <b>index.html</b>, then upload the unzipped folder through Cloudflare Pages → <b>Create deployment</b>.</p></details>
       <details class="tool-subcard"><summary><b>8. If something goes wrong</b></summary><p>Stop and take a screenshot. Check GitHub to confirm <b>index.html</b> was replaced correctly. Then check Cloudflare Deployments for errors or use the previous successful deployment if needed. Send ChatGPT the screenshot, current file, and what went wrong.</p></details>
     </section>
@@ -1066,11 +1124,11 @@
 
 <script>
 (function(){
-  const VERSION = 'Test Version 2.05';
+  const VERSION = 'Test Version 2.06';
   const ADMIN_PASSWORD = 'wire9393';
   const ADMIN_STORE_KEY = 'globalTradeToolAdminData_v2_test_0200';
   const HISTORY_KEY = 'globalTradeToolHistory_v2_test';
-  let releaseInfo = { version:'Test Version 2.05', month:'August 2026', updated:'8/12/2026' };
+  let releaseInfo = { version:'Test Version 2.06', month:'August 2026', updated:'8/12/2026' };
   const CCKM = "https://attone.lightning.force.com/lightning/r/Knowledge__kav/ka0fg000000eyyLAAQ/view?ws=%2Flightning%2Fr%2FKnowledge__kav%2Fka0fg000000fgcnAAA%2Fview";
   const AIR_TRADE_START = new Date(2026, 7, 7, 0, 0, 0, 0);
   function isIphoneAir(phone){ return !!(phone && String(phone.id || '').startsWith('ipair')); }
@@ -1254,7 +1312,7 @@
   const TRADE_DB = [{"brand":"Apple","model":"iPhone 11","storage":"128GB","value":55.0},{"brand":"Apple","model":"iPhone 11","storage":"256GB","value":55.0},{"brand":"Apple","model":"iPhone 11","storage":"64GB","value":55.0},{"brand":"Apple","model":"iPhone 11 Pro","storage":"256GB","value":95.0},{"brand":"Apple","model":"iPhone 11 Pro","storage":"512GB","value":95.0},{"brand":"Apple","model":"iPhone 11 Pro","storage":"64GB","value":95.0},{"brand":"Apple","model":"iPhone 11 Pro Max","storage":"256GB","value":95.0},{"brand":"Apple","model":"iPhone 11 Pro Max","storage":"512GB","value":95.0},{"brand":"Apple","model":"iPhone 11 Pro Max","storage":"64GB","value":95.0},{"brand":"Apple","model":"iPhone 12","storage":"128GB","value":95.0},{"brand":"Apple","model":"iPhone 12","storage":"256GB","value":95.0},{"brand":"Apple","model":"iPhone 12","storage":"64GB","value":95.0},{"brand":"Apple","model":"iPhone 12 mini","storage":"128GB","value":95.0},{"brand":"Apple","model":"iPhone 12 mini","storage":"256GB","value":95.0},{"brand":"Apple","model":"iPhone 12 mini","storage":"64GB","value":95.0},{"brand":"Apple","model":"iPhone 12 Pro","storage":"128GB","value":95.0},{"brand":"Apple","model":"iPhone 12 Pro","storage":"256GB","value":95.0},{"brand":"Apple","model":"iPhone 12 Pro","storage":"512GB","value":95.0},{"brand":"Apple","model":"iPhone 12 Pro Max","storage":"128GB","value":115.0},{"brand":"Apple","model":"iPhone 12 Pro Max","storage":"256GB","value":115.0},{"brand":"Apple","model":"iPhone 12 Pro Max","storage":"512GB","value":115.0},{"brand":"Apple","model":"iPhone 13","storage":"128GB","value":115.0},{"brand":"Apple","model":"iPhone 13","storage":"256GB","value":115.0},{"brand":"Apple","model":"iPhone 13","storage":"512GB","value":115.0},{"brand":"Apple","model":"iPhone 13 mini","storage":"128GB","value":95.0},{"brand":"Apple","model":"iPhone 13 mini","storage":"256GB","value":95.0},{"brand":"Apple","model":"iPhone 13 mini","storage":"512GB","value":95.0},{"brand":"Apple","model":"iPhone 13 Pro","storage":"128GB","value":125.0},{"brand":"Apple","model":"iPhone 13 Pro","storage":"1TB","value":125.0},{"brand":"Apple","model":"iPhone 13 Pro","storage":"256GB","value":125.0},{"brand":"Apple","model":"iPhone 13 Pro","storage":"512GB","value":125.0},{"brand":"Apple","model":"iPhone 13 Pro Max","storage":"128GB","value":195.0},{"brand":"Apple","model":"iPhone 13 Pro Max","storage":"1TB","value":195.0},{"brand":"Apple","model":"iPhone 13 Pro Max","storage":"256GB","value":195.0},{"brand":"Apple","model":"iPhone 13 Pro Max","storage":"512GB","value":195.0},{"brand":"Apple","model":"iPhone 14","storage":"128GB","value":130.0},{"brand":"Apple","model":"iPhone 14","storage":"256GB","value":130.0},{"brand":"Apple","model":"iPhone 14","storage":"512GB","value":130.0},{"brand":"Apple","model":"iPhone 14 Plus","storage":"128GB","value":135.0},{"brand":"Apple","model":"iPhone 14 Plus","storage":"256GB","value":135.0},{"brand":"Apple","model":"iPhone 14 Plus","storage":"512GB","value":135.0},{"brand":"Apple","model":"iPhone 14 Pro","storage":"128GB","value":195.0},{"brand":"Apple","model":"iPhone 14 Pro","storage":"1TB","value":215.0},{"brand":"Apple","model":"iPhone 14 Pro","storage":"256GB","value":195.0},{"brand":"Apple","model":"iPhone 14 Pro","storage":"512GB","value":195.0},{"brand":"Apple","model":"iPhone 14 Pro Max","storage":"128GB","value":230.0},{"brand":"Apple","model":"iPhone 14 Pro Max","storage":"1TB","value":230.0},{"brand":"Apple","model":"iPhone 14 Pro Max","storage":"256GB","value":230.0},{"brand":"Apple","model":"iPhone 14 Pro Max","storage":"512GB","value":230.0},{"brand":"Apple","model":"iPhone 15","storage":"128GB","value":230.0},{"brand":"Apple","model":"iPhone 15","storage":"256GB","value":230.0},{"brand":"Apple","model":"iPhone 15","storage":"512GB","value":230.0},{"brand":"Apple","model":"iPhone 15 Plus","storage":"128GB","value":290.0},{"brand":"Apple","model":"iPhone 15 Plus","storage":"256GB","value":290.0},{"brand":"Apple","model":"iPhone 15 Plus","storage":"512GB","value":290.0},{"brand":"Apple","model":"iPhone 15 Pro","storage":"128GB","value":290.0},{"brand":"Apple","model":"iPhone 15 Pro","storage":"1TB","value":290.0},{"brand":"Apple","model":"iPhone 15 Pro","storage":"256GB","value":290.0},{"brand":"Apple","model":"iPhone 15 Pro","storage":"512GB","value":290.0},{"brand":"Apple","model":"iPhone 15 Pro Max","storage":"1TB","value":370.0},{"brand":"Apple","model":"iPhone 15 Pro Max","storage":"256GB","value":330.0},{"brand":"Apple","model":"iPhone 15 Pro Max","storage":"512GB","value":330.0},{"brand":"Apple","model":"iPhone 16","storage":"128GB","value":320.0},{"brand":"Apple","model":"iPhone 16","storage":"256GB","value":320.0},{"brand":"Apple","model":"iPhone 16","storage":"512GB","value":320.0},{"brand":"Apple","model":"iPhone 16 Plus","storage":"128GB","value":330.0},{"brand":"Apple","model":"iPhone 16 Plus","storage":"256GB","value":330.0},{"brand":"Apple","model":"iPhone 16 Plus","storage":"512GB","value":330.0},{"brand":"Apple","model":"iPhone 16 Pro","storage":"128GB","value":385.0},{"brand":"Apple","model":"iPhone 16 Pro","storage":"1TB","value":450.0},{"brand":"Apple","model":"iPhone 16 Pro","storage":"256GB","value":380.0},{"brand":"Apple","model":"iPhone 16 Pro","storage":"512GB","value":420.0},{"brand":"Apple","model":"iPhone 16 Pro Max","storage":"1TB","value":550.0},{"brand":"Apple","model":"iPhone 16 Pro Max","storage":"256GB","value":480.0},{"brand":"Apple","model":"iPhone 16 Pro Max","storage":"512GB","value":510.0},{"brand":"Apple","model":"iPhone 16e","storage":"128GB","value":200.0},{"brand":"Apple","model":"iPhone 16e","storage":"256GB","value":200.0},{"brand":"Apple","model":"iPhone 16e","storage":"512GB","value":200.0},{"brand":"Apple","model":"iPhone 17","storage":"256GB","value":400.0},{"brand":"Apple","model":"iPhone 17","storage":"512GB","value":460.0},{"brand":"Apple","model":"iPhone 17 Pro","storage":"1TB","value":630.0},{"brand":"Apple","model":"iPhone 17 Pro","storage":"256GB","value":535.0},{"brand":"Apple","model":"iPhone 17 Pro","storage":"512GB","value":590.0},{"brand":"Apple","model":"iPhone 17 Pro Max","storage":"1TB","value":740.0},{"brand":"Apple","model":"iPhone 17 Pro Max","storage":"256GB","value":585.0},{"brand":"Apple","model":"iPhone 17 Pro Max","storage":"2TB","value":780.0},{"brand":"Apple","model":"iPhone 17 Pro Max","storage":"512GB","value":685.0},{"brand":"Apple","model":"iPhone 17e","storage":"256GB","value":285.0},{"brand":"Apple","model":"iPhone 17e","storage":"512GB","value":285.0},{"brand":"Apple","model":"iPhone Air","storage":"1TB","value":485.0},{"brand":"Apple","model":"iPhone Air","storage":"256GB","value":485.0},{"brand":"Apple","model":"iPhone Air","storage":"512GB","value":485.0},{"brand":"Apple","model":"iPhone SE (2nd gen)","storage":"128GB","value":20.0},{"brand":"Apple","model":"iPhone SE (2nd gen)","storage":"256GB","value":20.0},{"brand":"Apple","model":"iPhone SE (2nd gen)","storage":"64GB","value":20.0},{"brand":"Apple","model":"iPhone SE (3rd gen)","storage":"128GB","value":40.0},{"brand":"Apple","model":"iPhone SE (3rd gen)","storage":"256GB","value":40.0},{"brand":"Apple","model":"iPhone SE (3rd gen)","storage":"64GB","value":40.0},{"brand":"Apple","model":"iPhone XR","storage":"128GB","value":35.0},{"brand":"Apple","model":"iPhone XR","storage":"256GB","value":35.0},{"brand":"Apple","model":"iPhone XR","storage":"64GB","value":35.0},{"brand":"Apple","model":"iPhone XS","storage":"256GB","value":35.0},{"brand":"Apple","model":"iPhone XS","storage":"512GB","value":35.0},{"brand":"Apple","model":"iPhone XS","storage":"64GB","value":35.0},{"brand":"Apple","model":"iPhone XS Max","storage":"256GB","value":35.0},{"brand":"Apple","model":"iPhone XS Max","storage":"512GB","value":35.0},{"brand":"Apple","model":"iPhone XS Max","storage":"64GB","value":35.0},{"brand":"Google","model":"Pixel","storage":"128GB","value":1.0},{"brand":"Google","model":"Pixel","storage":"32GB","value":1.0},{"brand":"Google","model":"Pixel 10","storage":"128GB","value":290.0},{"brand":"Google","model":"Pixel 10","storage":"256GB","value":290.0},{"brand":"Google","model":"Pixel 10 Pro","storage":"128GB","value":350.0},{"brand":"Google","model":"Pixel 10 Pro","storage":"1TB","value":290.0},{"brand":"Google","model":"Pixel 10 Pro","storage":"256GB","value":350.0},{"brand":"Google","model":"Pixel 10 Pro","storage":"512GB","value":350.0},{"brand":"Google","model":"Pixel 10 Pro Fold","storage":"1TB","value":550.0},{"brand":"Google","model":"Pixel 10 Pro Fold","storage":"256GB","value":550.0},{"brand":"Google","model":"Pixel 10 Pro Fold","storage":"512GB","value":550.0},{"brand":"Google","model":"Pixel 10 Pro XL","storage":"1TB","value":420.0},{"brand":"Google","model":"Pixel 10 Pro XL","storage":"256GB","value":420.0},{"brand":"Google","model":"Pixel 10 Pro XL","storage":"512GB","value":420.0},{"brand":"Google","model":"Pixel 10a","storage":"128GB","value":210.0},{"brand":"Google","model":"Pixel 10a","storage":"256GB","value":210.0},{"brand":"Google","model":"Pixel 11","storage":"256GB","value":null},{"brand":"Google","model":"Pixel 11 Pro","storage":"256GB","value":null},{"brand":"Google","model":"Pixel 11 Pro","storage":"512GB","value":null},{"brand":"Google","model":"Pixel 11 Pro XL","storage":"256GB","value":null},{"brand":"Google","model":"Pixel 11 Pro XL","storage":"512GB","value":null},{"brand":"Google","model":"Pixel 2","storage":"128GB","value":1.0},{"brand":"Google","model":"Pixel 2","storage":"64GB","value":1.0},{"brand":"Google","model":"Pixel 2 XL","storage":"128GB","value":1.0},{"brand":"Google","model":"Pixel 2 XL","storage":"64GB","value":1.0},{"brand":"Google","model":"Pixel 3","storage":"128GB","value":1.0},{"brand":"Google","model":"Pixel 3","storage":"64GB","value":1.0},{"brand":"Google","model":"Pixel 3 XL","storage":"128GB","value":15.0},{"brand":"Google","model":"Pixel 3 XL","storage":"64GB","value":15.0},{"brand":"Google","model":"Pixel 3a","storage":"64GB","value":15.0},{"brand":"Google","model":"Pixel 3a XL","storage":"64GB","value":15.0},{"brand":"Google","model":"Pixel 4","storage":"128GB","value":20.0},{"brand":"Google","model":"Pixel 4","storage":"64GB","value":20.0},{"brand":"Google","model":"Pixel 4 XL","storage":"128GB","value":35.0},{"brand":"Google","model":"Pixel 4 XL","storage":"64GB","value":35.0},{"brand":"Google","model":"Pixel 4a","storage":"128GB","value":20.0},{"brand":"Google","model":"Pixel 4a 5G","storage":"128GB","value":20.0},{"brand":"Google","model":"Pixel 5","storage":"128GB","value":25.0},{"brand":"Google","model":"Pixel 5a","storage":"128GB","value":35.0},{"brand":"Google","model":"Pixel 6","storage":"128GB","value":35.0},{"brand":"Google","model":"Pixel 6","storage":"256GB","value":35.0},{"brand":"Google","model":"Pixel 6 Pro","storage":"128GB","value":35.0},{"brand":"Google","model":"Pixel 6 Pro","storage":"256GB","value":35.0},{"brand":"Google","model":"Pixel 6 Pro","storage":"512GB","value":35.0},{"brand":"Google","model":"Pixel 6a","storage":"128GB","value":35.0},{"brand":"Google","model":"Pixel 7","storage":"128GB","value":45.0},{"brand":"Google","model":"Pixel 7","storage":"256GB","value":45.0},{"brand":"Google","model":"Pixel 7 Pro","storage":"128GB","value":95.0},{"brand":"Google","model":"Pixel 7 Pro","storage":"256GB","value":95.0},{"brand":"Google","model":"Pixel 7 Pro","storage":"512GB","value":95.0},{"brand":"Google","model":"Pixel 7a","storage":"128GB","value":40.0},{"brand":"Google","model":"Pixel 8","storage":"128GB","value":110.0},{"brand":"Google","model":"Pixel 8","storage":"256GB","value":110.0},{"brand":"Google","model":"Pixel 8 Pro","storage":"128GB","value":150.0},{"brand":"Google","model":"Pixel 8 Pro","storage":"1TB","value":150.0},{"brand":"Google","model":"Pixel 8 Pro","storage":"256GB","value":150.0},{"brand":"Google","model":"Pixel 8 Pro","storage":"512GB","value":150.0},{"brand":"Google","model":"Pixel 8a","storage":"128GB","value":95.0},{"brand":"Google","model":"Pixel 8a","storage":"256GB","value":95.0},{"brand":"Google","model":"Pixel 9","storage":"128GB","value":230.0},{"brand":"Google","model":"Pixel 9","storage":"256GB","value":230.0},{"brand":"Google","model":"Pixel 9 Pro","storage":"128GB","value":230.0},{"brand":"Google","model":"Pixel 9 Pro","storage":"1TB","value":250.0},{"brand":"Google","model":"Pixel 9 Pro","storage":"256GB","value":240.0},{"brand":"Google","model":"Pixel 9 Pro","storage":"512GB","value":240.0},{"brand":"Google","model":"Pixel 9 Pro Fold","storage":"256GB","value":350.0},{"brand":"Google","model":"Pixel 9 Pro Fold","storage":"512GB","value":350.0},{"brand":"Google","model":"Pixel 9 Pro XL","storage":"128GB","value":265.0},{"brand":"Google","model":"Pixel 9 Pro XL","storage":"1TB","value":265.0},{"brand":"Google","model":"Pixel 9 Pro XL","storage":"256GB","value":265.0},{"brand":"Google","model":"Pixel 9 Pro XL","storage":"512GB","value":265.0},{"brand":"Google","model":"Pixel 9a","storage":"128GB","value":150.0},{"brand":"Google","model":"Pixel 9a","storage":"256GB","value":150.0},{"brand":"Google","model":"Pixel Fold","storage":"256GB","value":95.0},{"brand":"Google","model":"Pixel Fold","storage":"512GB","value":95.0},{"brand":"Google","model":"Pixel XL","storage":"128GB","value":5.0},{"brand":"Google","model":"Pixel XL","storage":"32GB","value":5.0},{"brand":"Motorola","model":"moto g 5G (2024)","storage":"128GB","value":35.0},{"brand":"Motorola","model":"moto g play","storage":"32GB","value":1.0},{"brand":"Motorola","model":"moto g play (2024)","storage":"64GB","value":1.0},{"brand":"Motorola","model":"moto g power","storage":"64GB","value":1.0},{"brand":"Motorola","model":"moto g power 5G","storage":"128GB","value":5.0},{"brand":"Motorola","model":"moto g power 5G (2024)","storage":"128GB","value":5.0},{"brand":"Motorola","model":"moto g pure","storage":"32GB","value":5.0},{"brand":"Motorola","model":"moto g stylus","storage":"128GB","value":1.0},{"brand":"Motorola","model":"moto g stylus 5G","storage":"128GB","value":5.0},{"brand":"Motorola","model":"moto g stylus 5G","storage":"256GB","value":5.0},{"brand":"Motorola","model":"moto g stylus 5G (2024)","storage":"128GB","value":5.0},{"brand":"Motorola","model":"moto g stylus 5G (2024)","storage":"256GB","value":5.0},{"brand":"Motorola","model":"motorola edge (2024)","storage":"256GB","value":35.0},{"brand":"Motorola","model":"Motorola Edge (older listing)","storage":"128GB","value":10.0},{"brand":"Motorola","model":"Motorola Edge (older listing)","storage":"256GB","value":10.0},{"brand":"Motorola","model":"Motorola Edge+","storage":"256GB","value":10.0},{"brand":"Motorola","model":"motorola edge+ 5G UW","storage":"128GB","value":35.0},{"brand":"Motorola","model":"motorola edge+ 5G UW","storage":"256GB","value":35.0},{"brand":"Motorola","model":"razr (2023)","storage":"128GB","value":30.0},{"brand":"Motorola","model":"razr (2024)","storage":"256GB","value":35.0},{"brand":"Motorola","model":"razr+ (2023) / razr Plus 5G","storage":"256GB","value":35.0},{"brand":"Motorola","model":"razr+ (2024)","storage":"256GB","value":45.0},{"brand":"Samsung","model":"Galaxy A17","storage":"128GB","value":35.0},{"brand":"Samsung","model":"Galaxy A56","storage":"128GB","value":95.0},{"brand":"Samsung","model":"Galaxy A56","storage":"256GB","value":95.0},{"brand":"Samsung","model":"Galaxy Note10","storage":"256GB","value":35.0},{"brand":"Samsung","model":"Galaxy Note10+","storage":"256GB","value":35.0},{"brand":"Samsung","model":"Galaxy Note10+","storage":"512GB","value":35.0},{"brand":"Samsung","model":"Galaxy Note20","storage":"128GB","value":35.0},{"brand":"Samsung","model":"Galaxy Note20 Ultra","storage":"128GB","value":70.0},{"brand":"Samsung","model":"Galaxy Note20 Ultra","storage":"512GB","value":70.0},{"brand":"Samsung","model":"Galaxy S10","storage":"128GB","value":35.0},{"brand":"Samsung","model":"Galaxy S10","storage":"512GB","value":35.0},{"brand":"Samsung","model":"Galaxy S10+","storage":"128GB","value":35.0},{"brand":"Samsung","model":"Galaxy S10+","storage":"512GB","value":35.0},{"brand":"Samsung","model":"Galaxy S10e","storage":"128GB","value":35.0},{"brand":"Samsung","model":"Galaxy S10e","storage":"256GB","value":35.0},{"brand":"Samsung","model":"Galaxy S20","storage":"128GB","value":35.0},{"brand":"Samsung","model":"Galaxy S20 FE","storage":"128GB","value":35.0},{"brand":"Samsung","model":"Galaxy S20 FE","storage":"256GB","value":35.0},{"brand":"Samsung","model":"Galaxy S20 Ultra","storage":"128GB","value":50.0},{"brand":"Samsung","model":"Galaxy S20 Ultra","storage":"512GB","value":50.0},{"brand":"Samsung","model":"Galaxy S20+","storage":"128GB","value":35.0},{"brand":"Samsung","model":"Galaxy S20+","storage":"512GB","value":35.0},{"brand":"Samsung","model":"Galaxy S21","storage":"128GB","value":35.0},{"brand":"Samsung","model":"Galaxy S21","storage":"256GB","value":35.0},{"brand":"Samsung","model":"Galaxy S21 FE","storage":"128GB","value":35.0},{"brand":"Samsung","model":"Galaxy S21 FE","storage":"256GB","value":35.0},{"brand":"Samsung","model":"Galaxy S21 Ultra","storage":"128GB","value":85.0},{"brand":"Samsung","model":"Galaxy S21 Ultra","storage":"256GB","value":85.0},{"brand":"Samsung","model":"Galaxy S21 Ultra","storage":"512GB","value":85.0},{"brand":"Samsung","model":"Galaxy S21+","storage":"128GB","value":55.0},{"brand":"Samsung","model":"Galaxy S21+","storage":"256GB","value":55.0},{"brand":"Samsung","model":"Galaxy S22","storage":"128GB","value":60.0},{"brand":"Samsung","model":"Galaxy S22","storage":"256GB","value":69.0},{"brand":"Samsung","model":"Galaxy S22 Ultra","storage":"128GB","value":130.0},{"brand":"Samsung","model":"Galaxy S22 Ultra","storage":"1TB","value":130.0},{"brand":"Samsung","model":"Galaxy S22 Ultra","storage":"256GB","value":130.0},{"brand":"Samsung","model":"Galaxy S22 Ultra","storage":"512GB","value":130.0},{"brand":"Samsung","model":"Galaxy S22+","storage":"128GB","value":95.0},{"brand":"Samsung","model":"Galaxy S22+","storage":"256GB","value":95.0},{"brand":"Samsung","model":"Galaxy S23","storage":"128GB","value":130.0},{"brand":"Samsung","model":"Galaxy S23","storage":"256GB","value":130.0},{"brand":"Samsung","model":"Galaxy S23 FE","storage":"128GB","value":95.0},{"brand":"Samsung","model":"Galaxy S23 FE","storage":"256GB","value":95.0},{"brand":"Samsung","model":"Galaxy S23 Ultra","storage":"1TB","value":200.0},{"brand":"Samsung","model":"Galaxy S23 Ultra","storage":"256GB","value":200.0},{"brand":"Samsung","model":"Galaxy S23 Ultra","storage":"512GB","value":200.0},{"brand":"Samsung","model":"Galaxy S23+","storage":"256GB","value":150.0},{"brand":"Samsung","model":"Galaxy S23+","storage":"512GB","value":150.0},{"brand":"Samsung","model":"Galaxy S24","storage":"128GB","value":160.0},{"brand":"Samsung","model":"Galaxy S24","storage":"256GB","value":160.0},{"brand":"Samsung","model":"Galaxy S24 FE","storage":"128GB","value":130.0},{"brand":"Samsung","model":"Galaxy S24 FE","storage":"256GB","value":130.0},{"brand":"Samsung","model":"Galaxy S24 Ultra","storage":"1TB","value":300.0},{"brand":"Samsung","model":"Galaxy S24 Ultra","storage":"256GB","value":300.0},{"brand":"Samsung","model":"Galaxy S24 Ultra","storage":"512GB","value":300.0},{"brand":"Samsung","model":"Galaxy S24+","storage":"256GB","value":230.0},{"brand":"Samsung","model":"Galaxy S24+","storage":"512GB","value":230.0},{"brand":"Samsung","model":"Galaxy S25","storage":"128GB","value":290.0},{"brand":"Samsung","model":"Galaxy S25","storage":"256GB","value":290.0},{"brand":"Samsung","model":"Galaxy S25 Edge","storage":"256GB","value":300.0},{"brand":"Samsung","model":"Galaxy S25 Edge","storage":"512GB","value":300.0},{"brand":"Samsung","model":"Galaxy S25 FE","storage":"128GB","value":230.0},{"brand":"Samsung","model":"Galaxy S25 FE","storage":"256GB","value":230.0},{"brand":"Samsung","model":"Galaxy S25 Ultra","storage":"1TB","value":455.0},{"brand":"Samsung","model":"Galaxy S25 Ultra","storage":"256GB","value":455.0},{"brand":"Samsung","model":"Galaxy S25 Ultra","storage":"512GB","value":455.0},{"brand":"Samsung","model":"Galaxy S25+","storage":"256GB","value":330.0},{"brand":"Samsung","model":"Galaxy S25+","storage":"512GB","value":330.0},{"brand":"Samsung","model":"Galaxy S26","storage":"256GB","value":350.0},{"brand":"Samsung","model":"Galaxy S26","storage":"512GB","value":350.0},{"brand":"Samsung","model":"Galaxy S26 Ultra","storage":"1TB","value":520.0},{"brand":"Samsung","model":"Galaxy S26 Ultra","storage":"256GB","value":500.0},{"brand":"Samsung","model":"Galaxy S26 Ultra","storage":"512GB","value":520.0},{"brand":"Samsung","model":"Galaxy S26+","storage":"256GB","value":450.0},{"brand":"Samsung","model":"Galaxy S26+","storage":"512GB","value":470.0},{"brand":"Samsung","model":"Galaxy Z Flip3","storage":"128GB","value":35.0},{"brand":"Samsung","model":"Galaxy Z Flip3","storage":"256GB","value":35.0},{"brand":"Samsung","model":"Galaxy Z Flip4","storage":"128GB","value":95.0},{"brand":"Samsung","model":"Galaxy Z Flip4","storage":"256GB","value":95.0},{"brand":"Samsung","model":"Galaxy Z Flip4","storage":"512GB","value":95.0},{"brand":"Samsung","model":"Galaxy Z Flip5","storage":"256GB","value":95.0},{"brand":"Samsung","model":"Galaxy Z Flip5","storage":"512GB","value":95.0},{"brand":"Samsung","model":"Galaxy Z Flip6","storage":"256GB","value":190.0},{"brand":"Samsung","model":"Galaxy Z Flip6","storage":"512GB","value":190.0},{"brand":"Samsung","model":"Galaxy Z Flip7","storage":"256GB","value":250.0},{"brand":"Samsung","model":"Galaxy Z Flip7","storage":"512GB","value":250.0},{"brand":"Samsung","model":"Galaxy Z Flip8","storage":"256GB","value":null},{"brand":"Samsung","model":"Galaxy Z Flip8","storage":"512GB","value":null},{"brand":"Samsung","model":"Galaxy Z Fold3","storage":"256GB","value":95.0},{"brand":"Samsung","model":"Galaxy Z Fold3","storage":"512GB","value":95.0},{"brand":"Samsung","model":"Galaxy Z Fold4","storage":"1TB","value":120.0},{"brand":"Samsung","model":"Galaxy Z Fold4","storage":"256GB","value":120.0},{"brand":"Samsung","model":"Galaxy Z Fold4","storage":"512GB","value":120.0},{"brand":"Samsung","model":"Galaxy Z Fold5","storage":"1TB","value":210.0},{"brand":"Samsung","model":"Galaxy Z Fold5","storage":"256GB","value":210.0},{"brand":"Samsung","model":"Galaxy Z Fold5","storage":"512GB","value":210.0},{"brand":"Samsung","model":"Galaxy Z Fold6","storage":"1TB","value":300.0},{"brand":"Samsung","model":"Galaxy Z Fold6","storage":"256GB","value":300.0},{"brand":"Samsung","model":"Galaxy Z Fold6","storage":"512GB","value":300.0},{"brand":"Samsung","model":"Galaxy Z Fold7","storage":"1TB","value":510.0},{"brand":"Samsung","model":"Galaxy Z Fold7","storage":"256GB","value":480.0},{"brand":"Samsung","model":"Galaxy Z Fold7","storage":"512GB","value":480.0},{"brand":"Samsung","model":"Galaxy Z Fold8","storage":"1TB","value":null},{"brand":"Samsung","model":"Galaxy Z Fold8","storage":"256GB","value":null},{"brand":"Samsung","model":"Galaxy Z Fold8","storage":"512GB","value":null},{"brand":"Samsung","model":"Galaxy Z Fold8 Ultra","storage":"1TB","value":null},{"brand":"Samsung","model":"Galaxy Z Fold8 Ultra","storage":"256GB","value":null},{"brand":"Samsung","model":"Galaxy Z Fold8 Ultra","storage":"512GB","value":null}];
   const TRADE_DB_UPDATED = '8/12/2026';
   const state = { plan:null, phone:null, value:null, tradePreset:null, pixel:false, galaxyAny:'none', nextUp:false, nextUpType:'anytime', nextPaid:null, tierAction:null,
-    tradeDevice:null, tradeStorage:null, tradeBaseValue:null, tradeValueMode:null,
+    noTrade:false, tradeDevice:null, tradeStorage:null, tradeBaseValue:null, tradeValueMode:null,
     tradeCondition:{power:null,lock:null,cracks:null}
   };
 
@@ -1267,6 +1325,42 @@
   const pixelChk = el('pixelChk'), planHelp = el('planHelp'), pixelToggleEl = el('pixelToggle'), galaxyAnyToggleEl = el('galaxyAnyToggle'), galaxyAnySelect = el('galaxyAnySelect');
 
   const VISIBLE_PHONE_IDS = ['ip17','ipair','ip17p','ip17pm','i17e-256','s26-256','s26p','s26u','zflip8','zfold8','zfold8u','a17','a37','p11-256','p11pro-256','p11xl-256'];
+
+  const noTradeBtn = el('noTradeBtn');
+
+  function tradeStepComplete(){
+    return state.noTrade || !!state.tradeDevice || (state.tradeValueMode === 'manual' && state.value !== null && !isNaN(state.value));
+  }
+  function setStepLocked(cardId, locked, extraClass){
+    const card = el(cardId);
+    if(!card) return;
+    card.classList.toggle('step-locked', !!locked);
+    if(extraClass) card.classList.toggle(extraClass, !!locked);
+    card.setAttribute('aria-disabled', locked ? 'true' : 'false');
+    try { card.inert = !!locked; } catch(e) {}
+  }
+  function updateStepLocks(){
+    setStepLocked('phonesCard', !state.plan);
+    setStepLocked('tradeCard', !state.phone);
+    // Next Up requires an actual current/trade-in phone because condition must be verified.
+    const nextLocked = !state.tradeDevice;
+    setStepLocked('nextUpCard', nextLocked, state.noTrade ? 'no-trade-lock' : '');
+    const nextCard = el('nextUpCard');
+    if(nextCard && !state.noTrade) nextCard.classList.remove('no-trade-lock');
+  }
+  function clearNextUpSelection(){
+    state.nextUp=false;
+    state.nextUpType='anytime';
+    state.nextPaid=null;
+    if(typeof nextUpChk !== 'undefined' && nextUpChk){
+      nextUpChk.checked=false;
+    }
+    const typeRow=el('nextTypeRow'), paidRow=el('nextPaidRow');
+    if(typeRow) typeRow.style.display='none';
+    if(paidRow) paidRow.style.display='none';
+    document.querySelectorAll('#nextPaidChips .chip').forEach(x=>x.setAttribute('aria-pressed','false'));
+    document.querySelectorAll('#nextTypeChips .chip').forEach(x=>x.setAttribute('aria-pressed', x.dataset.nextType === 'anytime' ? 'true' : 'false'));
+  }
 
   const phonesRecent = el('phonesRecent');
   const recentPicksWrap = el('recentPicksWrap');
@@ -1549,6 +1643,8 @@
   }
   function chooseTradeDevice(brand,model){
     const found=TRADE_MODELS.find(x=>x.brand===brand&&x.model===model); if(!found)return;
+    state.noTrade=false;
+    if(noTradeBtn) noTradeBtn.setAttribute('aria-pressed','false');
     state.tradeDevice={brand,model}; state.tradeStorage=null; state.tradeValueMode='auto'; tradeDeviceSearch.value=`${brand} ${model}`; tradeDeviceSuggestions.classList.remove('open'); resetTradeCondition(); renderTradeStorage();
   }
   function updateTradeDeviceSuggestions(showAll){
@@ -1558,16 +1654,30 @@
     rows.slice(0,100).forEach(x=>{ const vals=x.rows.filter(r=>isTradeValueKnown(r.value)).map(r=>Number(r.value)); const li=document.createElement('li'); const l=document.createElement('span'); l.innerHTML=`<span class="lookup-brand">${escapeHtml(x.brand)}</span><br><span class="lookup-model">${escapeHtml(x.model)}</span>`; const rr=document.createElement('span'); rr.className='lookup-value '+(vals.length?'':'unknown'); rr.textContent=vals.length?(Math.min(...vals)===Math.max(...vals)?formatTradeValue(vals[0]):`${formatTradeValue(Math.min(...vals))}–${formatTradeValue(Math.max(...vals))}`):'verify value'; li.appendChild(l);li.appendChild(rr);li.addEventListener('click',()=>chooseTradeDevice(x.brand,x.model));tradeDeviceSuggestionsList.appendChild(li); });
     tradeDeviceSuggestions.classList.toggle('open',rows.length>0); tradeDeviceSearch.setAttribute('aria-expanded',rows.length?'true':'false');
   }
+  if(noTradeBtn){
+    noTradeBtn.addEventListener('click',()=>{
+      state.noTrade=true;
+      state.tradeDevice=null; state.tradeStorage=null; state.tradeBaseValue=null; state.tradeValueMode=null; state.value=null;
+      tradeDeviceSearch.value=''; tradeDeviceSuggestions.classList.remove('open'); tradeStorageRow.classList.remove('show'); tradeConditionPanel.classList.remove('show');
+      resetTradeCondition();
+      tradeEl.value=''; tradeError.style.display='none'; manualOverridePill.classList.remove('show');
+      tradeDbStatus.className='trade-db-status'; tradeDbStatus.textContent='No trade selected.';
+      state.pixel=false; pixelChk.checked=false; state.galaxyAny='none'; galaxyAnySelect.value='none';
+      clearNextUpSelection();
+      noTradeBtn.setAttribute('aria-pressed','true');
+      render();
+    });
+  }
   tradeDeviceSearch.addEventListener('input',()=>updateTradeDeviceSuggestions(true));
   tradeDeviceSearch.addEventListener('focus',()=>updateTradeDeviceSuggestions(true));
-  el('tradeDeviceClear').addEventListener('click',()=>{state.tradeDevice=null;state.tradeStorage=null;state.tradeBaseValue=null;state.tradeValueMode=null;tradeDeviceSearch.value='';tradeDeviceSuggestions.classList.remove('open');tradeStorageRow.classList.remove('show');tradeConditionPanel.classList.remove('show');resetTradeCondition();state.pixel=false;pixelChk.checked=false;tradeDbStatus.className='trade-db-status';tradeDbStatus.textContent='Choose a trade-in phone or enter a value manually.';render();});
+  el('tradeDeviceClear').addEventListener('click',()=>{state.noTrade=false;if(noTradeBtn)noTradeBtn.setAttribute('aria-pressed','false');state.tradeDevice=null;state.tradeStorage=null;state.tradeBaseValue=null;state.tradeValueMode=null;tradeDeviceSearch.value='';tradeDeviceSuggestions.classList.remove('open');tradeStorageRow.classList.remove('show');tradeConditionPanel.classList.remove('show');resetTradeCondition();state.pixel=false;pixelChk.checked=false;clearNextUpSelection();tradeDbStatus.className='trade-db-status';tradeDbStatus.textContent='Choose a trade-in phone or enter a value manually.';render();});
   tradeStorageSelect.addEventListener('change',()=>{state.tradeStorage=tradeStorageSelect.value;resetTradeCondition();applyTradeDatabaseValue();});
   document.querySelectorAll('[data-cond]').forEach(b=>b.addEventListener('click',()=>{ const key=b.dataset.cond,val=b.dataset.answer==='yes'; state.tradeCondition[key]=val; document.querySelectorAll(`[data-cond="${key}"]`).forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false')); tradeConditionPanel.classList.toggle('condition-poor',conditionPoor());tradeConditionPanel.classList.toggle('condition-good',conditionComplete()&&!conditionPoor());applyTradeDatabaseValue(); }));
 
   // Quick trade-value chips remain available as a manual shortcut.
-  document.querySelectorAll('#quick .chip').forEach(b=>b.addEventListener('click',()=>{const n=parseFloat(b.dataset.v);if(!isNaN(n)){state.value=n;state.tradeValueMode='manual';tradeEl.value=formatTradeValue(n);tradeDbStatus.className='trade-db-status manual';tradeDbStatus.textContent='Manual trade value entered — verify before quoting.';manualOverridePill.classList.add('show');render();}}));
+  document.querySelectorAll('#quick .chip').forEach(b=>b.addEventListener('click',()=>{const n=parseFloat(b.dataset.v);if(!isNaN(n)){state.noTrade=false;if(noTradeBtn)noTradeBtn.setAttribute('aria-pressed','false');state.value=n;state.tradeValueMode='manual';tradeEl.value=formatTradeValue(n);tradeDbStatus.className='trade-db-status manual';tradeDbStatus.textContent='Manual trade value entered — verify before quoting.';manualOverridePill.classList.add('show');render();}}));
   function parseTradeField(){ const n=parseFloat(tradeEl.value.replace(/[^0-9.]/g,'')); state.value=isNaN(n)?null:Math.round(n*100)/100; }
-  tradeEl.addEventListener('input',()=>{parseTradeField();state.tradeValueMode='manual';tradeError.style.display='none';tradeDbStatus.className='trade-db-status manual';tradeDbStatus.textContent='Manual trade value entered — verify before quoting.';manualOverridePill.classList.add('show');render();});
+  tradeEl.addEventListener('input',()=>{state.noTrade=false;if(noTradeBtn)noTradeBtn.setAttribute('aria-pressed','false');parseTradeField();state.tradeValueMode='manual';tradeError.style.display='none';tradeDbStatus.className='trade-db-status manual';tradeDbStatus.textContent='Manual trade value entered — verify before quoting.';manualOverridePill.classList.add('show');render();});
   tradeEl.addEventListener('focus',()=>{tradeEl.value=tradeEl.value.replace(/[^0-9.]/g,'');tradeEl.select();});
   tradeEl.addEventListener('blur',()=>{const n=parseFloat(tradeEl.value.replace(/[^0-9.]/g,''));if(isNaN(n)||n<0){state.value=null;tradeError.style.display='block';tradeEl.value='';}else{state.value=Math.round(n*100)/100;tradeError.style.display='none';tradeEl.value=formatTradeValue(state.value);}render();});
   function updateTradeHelp(){ tradeHelp.style.display='none'; }
@@ -1611,7 +1721,7 @@
 
   // clear all & clear trade
   function resetAllFields(){
-    state.plan=null; state.phone=null; state.value=null; state.tradePreset=null; state.pixel=false; state.galaxyAny='none'; state.nextUp=false; state.nextUpType='anytime'; state.nextPaid=null; state.tierAction=null; state.tradeDevice=null; state.tradeStorage=null; state.tradeBaseValue=null; state.tradeValueMode=null; state.tradeCondition={power:null,lock:null,cracks:null};
+    state.plan=null; state.phone=null; state.value=null; state.tradePreset=null; state.pixel=false; state.noTrade=false; state.galaxyAny='none'; state.nextUp=false; state.nextUpType='anytime'; state.nextPaid=null; state.tierAction=null; state.tradeDevice=null; state.tradeStorage=null; state.tradeBaseValue=null; state.tradeValueMode=null; state.tradeCondition={power:null,lock:null,cracks:null};
     document.querySelectorAll('#plans .chip').forEach(x=>x.setAttribute('aria-pressed','false'));
     document.querySelectorAll('#phonesQuick .chip').forEach(x=>x.setAttribute('aria-pressed','false'));
     document.querySelectorAll('#nextPaidChips .chip').forEach(x=>x.setAttribute('aria-pressed','false'));
@@ -1621,6 +1731,7 @@
     phoneSearch.value=''; phoneSuggestions.classList.remove('open');
     tradeEl.value=''; tradeEl.disabled=false; tradeError.style.display='none';
     tradeDeviceSearch.value=''; tradeDeviceSuggestions.classList.remove('open'); tradeStorageRow.classList.remove('show'); tradeConditionPanel.classList.remove('show'); resetTradeCondition(); tradeDbStatus.className='trade-db-status'; tradeDbStatus.textContent='Choose a trade-in phone or enter a value manually.'; manualOverridePill.classList.remove('show');
+    if(noTradeBtn) noTradeBtn.setAttribute('aria-pressed','false');
     document.querySelectorAll('#quick .chip').forEach(x=>x.disabled=false);
     pixelChk.checked=false;
     galaxyAnySelect.value = 'none';
@@ -1963,6 +2074,7 @@
 
   // getResult returns outcome object describing current state
   function getResult(){
+    if(state.plan && state.phone && !tradeStepComplete()) return { state:'need_trade_choice' };
     // Next Up / Next Up Anytime always requires identifying the CURRENT phone
     // and confirming that its turn-in condition is eligible.
     if(state.nextUp && !state.tradeDevice) return { state:'nextup_need_device' };
@@ -2030,6 +2142,8 @@
       }
     }
 
+    if(state.noTrade) return { state:'full_retail' };
+
     const cat = phoneCategory(state.phone);
     const hasLadder = LADDERS[state.plan] && LADDERS[state.plan][cat];
     if(!hasLadder) return { state:'full_retail' };
@@ -2047,6 +2161,7 @@
   // build summary text
   function buildSummary(){
     const r = getResult();
+    if(r.state === 'need_trade_choice') return 'Choose a trade-in phone, enter a trade value, or select No Trade.';
     if(r.state === 'nextup_need_device') return 'Next Up selected — choose the customer’s current phone so turn-in condition can be verified.';
     if(r.state === 'nextup_need_condition') return 'Next Up selected — answer all three condition questions for the customer’s current phone. The phone must be in eligible turn-in condition.';
     if(r.state === 'needCondition') return 'Trade-in selected — answer all three condition questions before calculating the promotion.';
@@ -2271,7 +2386,10 @@
     if(!state.plan || !state.phone) return 'Pick a plan, phone, and trade-in value.';
     const phoneLabel = `${state.phone.name}${state.phone.storage ? ' '+state.phone.storage : ''}`;
     if(r.state === 'nextup_promo') return `${phoneLabel}: ${moneyWhole(r.credit)} Next Up credit.`;
-    if(r.state === 'nextup_need_device'){
+    if(r.state === 'need_trade_choice'){
+      amountEl.innerHTML = '$&mdash;';
+      detailEl.innerHTML = `<div class="d-rule" style="border-top:none;"><b>Choose the trade-in step.</b><br>Select the customer’s old phone, enter a trade value manually, or tap <b>No Trade</b> to continue.</div>`;
+    } else if(r.state === 'nextup_need_device'){
       amountEl.innerHTML = '$&mdash;';
       detailEl.innerHTML = `<div class="d-rule" style="border-top:none;"><b>Choose the customer’s current phone.</b><br>Next Up / Next Up Anytime requires the old phone to be selected so its turn-in condition can be verified. The old phone is used for the payoff/turn-in path — it is not an extra bill credit.</div>`;
     } else if(r.state === 'nextup_need_condition'){
@@ -2820,6 +2938,7 @@
   // Render UI
   let lastShownCredit = null;
   function render(){
+    updateStepLocks();
     summaryEl.textContent = buildShortSummary();
     updateCopyArea();
 
