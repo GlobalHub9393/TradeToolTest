@@ -487,7 +487,7 @@
       </div>
       <div style="margin-left:auto; text-align:right;">
         <div class="sub" id="releaseMeta">August 2026 &middot; Last Updated 8/12/2026</div>
-        <div class="version" id="versionBadge" title="Tap 5 times for admin">Test Version 2.02</div>
+        <div class="version" id="versionBadge" title="Tap 5 times for admin">Test Version 2.03</div>
         <button id="toolsOpenBtn" class="admin-open-btn tools-open-btn" type="button">☰ Tools</button>
         <button id="adminOpenBtn" class="admin-open-btn" type="button">Admin</button>
       </div>
@@ -608,7 +608,7 @@
           <button class="chip qchip" data-v="290">$290</button>
           <button class="chip qchip" data-v="400">$400+</button>
         </div>
-        <div class="verify-banner"><b>Always verify the trade value.</b> Global Trade Tool uses a maintained reference database and can contain human error or outdated values. In store, confirm the value using designated AT&amp;T trade tools before quoting or submitting the trade.</div>
+        <div class="verify-banner"><b>Always verify the trade value.</b> Global Trade Tool uses a maintained reference database and can contain human error or outdated values. In store, confirm the value using designated AT&amp;T trade tools before quoting or submitting the trade.<br><a href="https://tradein.att.com/" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:7px;font-weight:800;">Open trade value lookup</a></div>
       </section>
 
       <!-- NEXT UP -->
@@ -743,7 +743,7 @@
   <div class="whats-new-panel" role="dialog" aria-modal="true" aria-labelledby="whatsNewTitle">
     <div class="whats-new-kicker">Changes since last update</div>
     <h2 id="whatsNewTitle" class="whats-new-title">What’s New</h2>
-    <div class="whats-new-version">Version 2.02</div>
+    <div class="whats-new-version">Version 2.03</div>
     <p class="whats-new-sub">This message appears once for each new published version.</p>
 
     <section class="whats-new-section">
@@ -970,12 +970,12 @@
       <div class="admin-subhead">Accounts</div>
       <div class="tool-subcard"><b>GitHub repo:</b> GlobalHub9393 / Tradetool<br><b>Cloudflare email:</b> Ts8686@cmcnj.com<br><b>Cloudflare password:</b> Stored separately</div>
       <div class="admin-subhead">Quick Guide — GitHub First</div>
-      <details class="tool-subcard"><summary><b>1. Send ChatGPT the current code and changes</b></summary><p>Upload or reference the current <b>index.html</b> from the GitHub repo. Tell ChatGPT the exact date, that it is still <b>Test Version 2.02</b>, and list the promo, phone, FAQ, layout, or wording changes needed. Ask for an updated <b>index.html</b> file.</p></details>
+      <details class="tool-subcard"><summary><b>1. Send ChatGPT the current code and changes</b></summary><p>Upload or reference the current <b>index.html</b> from the GitHub repo. Tell ChatGPT the exact date, that it is still <b>Test Version 2.03</b>, and list the promo, phone, FAQ, layout, or wording changes needed. Ask for an updated <b>index.html</b> file.</p></details>
       <details class="tool-subcard"><summary><b>2. Download the updated index.html</b></summary><p>Download the updated file from ChatGPT. The main site file must be named exactly <b>index.html</b>. If the file name becomes <b>index.html.txt</b>, <b>GlobalTradeTool_v1_DEV</b>, or anything else, rename it or ask for a corrected file before uploading to GitHub.</p></details>
       <details class="tool-subcard"><summary><b>3. Upload index.html to GitHub</b></summary><p>Open GitHub, go to <b>GlobalHub9393 / Tradetool</b>, tap <b>Add file</b>, then upload the updated <b>index.html</b>. If GitHub asks whether to replace the existing file, replace it. Commit directly to the <b>main</b> branch.</p></details>
       <details class="tool-subcard"><summary><b>4. Commit the change</b></summary><p>Use a simple commit message like <b>Update Global Trade Tool 7/31/2026</b>. Tap <b>Commit changes</b>. GitHub should now show the latest <b>index.html</b> in the file list.</p></details>
       <details class="tool-subcard"><summary><b>5. Cloudflare deployment after GitHub is connected</b></summary><p>Once Cloudflare Pages is linked to this GitHub repo, Cloudflare should automatically create a new deployment from the <b>main</b> branch after every GitHub commit. Go to Cloudflare → <b>Workers &amp; Pages</b> → the Global Trade Tool project → <b>Deployments</b> to confirm the newest deployment completed successfully.</p></details>
-      <details class="tool-subcard"><summary><b>6. Test the live site</b></summary><p>Open <b>globaltradetool.com</b>. Confirm the site opens normally, the header still says <b>Test Version 2.02</b>, the date is correct, the calculator works, More opens, Tools opens, Recent Changes opens, FAQ / Trade Help opens, Admin opens, promos calculate correctly, and tiered offers show correctly.</p></details>
+      <details class="tool-subcard"><summary><b>6. Test the live site</b></summary><p>Open <b>globaltradetool.com</b>. Confirm the site opens normally, the header still says <b>Test Version 2.03</b>, the date is correct, the calculator works, More opens, Tools opens, Recent Changes opens, FAQ / Trade Help opens, Admin opens, promos calculate correctly, and tiered offers show correctly.</p></details>
       <details class="tool-subcard"><summary><b>7. If Cloudflare is not connected yet</b></summary><p>Use the old ZIP/folder upload only as a fallback. Download the Cloudflare folder ZIP from ChatGPT, unzip it in Files, confirm the folder contains <b>index.html</b>, then upload the unzipped folder through Cloudflare Pages → <b>Create deployment</b>.</p></details>
       <details class="tool-subcard"><summary><b>8. If something goes wrong</b></summary><p>Stop and take a screenshot. Check GitHub to confirm <b>index.html</b> was replaced correctly. Then check Cloudflare Deployments for errors or use the previous successful deployment if needed. Send ChatGPT the screenshot, current file, and what went wrong.</p></details>
     </section>
@@ -1065,11 +1065,11 @@
 
 <script>
 (function(){
-  const VERSION = 'Test Version 2.02';
+  const VERSION = 'Test Version 2.03';
   const ADMIN_PASSWORD = 'wire9393';
   const ADMIN_STORE_KEY = 'globalTradeToolAdminData_v2_test_0200';
   const HISTORY_KEY = 'globalTradeToolHistory_v2_test';
-  let releaseInfo = { version:'Test Version 2.02', month:'August 2026', updated:'8/12/2026' };
+  let releaseInfo = { version:'Test Version 2.03', month:'August 2026', updated:'8/12/2026' };
   const CCKM = "https://attone.lightning.force.com/lightning/r/Knowledge__kav/ka0fg000000eyyLAAQ/view?ws=%2Flightning%2Fr%2FKnowledge__kav%2Fka0fg000000fgcnAAA%2Fview";
   const AIR_TRADE_START = new Date(2026, 7, 7, 0, 0, 0, 0);
   function isIphoneAir(phone){ return !!(phone && String(phone.id || '').startsWith('ipair')); }
@@ -2086,8 +2086,8 @@
       amountEl.innerHTML = '$—';
       detailEl.innerHTML = `<div class="d-rule" style="border-top:none;"><b>Confirm trade-in condition.</b><br>Answer all three device-condition questions to calculate the adjusted trade value and promotion.</div>`;
     } else if(r.state === 'nextup_bad_condition'){
-      amountEl.innerHTML = '$0'; amountEl.classList.add('ineligible');
-      detailEl.innerHTML = `<div class="d-rule" style="border-top:none;color:#ffd9d9;"><b>Next Up and Next Up Anytime are Ineligible.</b><br>Look for opportunities related to a <b>New Line or Insurance.</b></div>`;
+      amountEl.innerHTML = 'INELIGIBLE'; amountEl.classList.add('ineligible');
+      detailEl.innerHTML = `<div class="d-rule" style="border-top:none;color:#ffd9d9;"><b>Broken / poor-condition device cannot be used for Next Up.</b><br><b>Next Up and Next Up Anytime are Ineligible.</b><br>Look for opportunities related to a <b>New Line or Insurance.</b></div>`;
     } else if(r.state === 'promo'){
       const phoneLabel = `${state.phone.name}${state.phone.storage ? ' '+state.phone.storage : ''}`;
       const tradeDesc = samsungAnyConditionLabel() || ((state.value !== null && !isNaN(state.value)) ? moneyWhole(state.value) : (state.pixel ? 'an eligible Google Pixel' : 'a trade-in device'));
