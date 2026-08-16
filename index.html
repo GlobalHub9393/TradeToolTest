@@ -582,6 +582,33 @@
   .condition-poor{border-color:#e3a6a6;background:#fff5f5}.condition-good{border-color:#9ed5b6;background:#f3fbf6}
   .manual-override-pill{display:none;margin-left:6px;padding:2px 7px;border-radius:999px;background:#fff2cc;color:#7c5b00;font-size:10px;font-weight:900;vertical-align:middle}.manual-override-pill.show{display:inline-block}
 
+
+  /* === GTT 3.0 LIVE DATABASE ADMIN (TEST) === */
+  .live-db-toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0 14px}
+  .live-db-toolbar select,.live-db-toolbar input{min-height:42px;border:1.5px solid var(--line);border-radius:10px;padding:8px 10px;background:#fff;color:var(--ink);font:inherit}
+  .live-db-toolbar input{flex:1;min-width:190px}
+  .live-db-status{font-size:12px;color:var(--slate);margin:8px 0}
+  .live-db-layout{display:grid;grid-template-columns:minmax(250px,.9fr) minmax(300px,1.1fr);gap:12px}
+  .live-db-list{border:1px solid var(--line);border-radius:12px;background:#fff;max-height:56vh;overflow:auto}
+  .live-db-row{display:block;width:100%;text-align:left;border:0;border-bottom:1px solid #edf2f6;background:#fff;padding:11px 12px;cursor:pointer;color:var(--ink)}
+  .live-db-row:last-child{border-bottom:0}
+  .live-db-row:hover,.live-db-row.selected{background:#eef8ff}
+  .live-db-row b{display:block;font-size:13px}
+  .live-db-row span{display:block;font-size:11px;color:var(--slate);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .live-db-editor{border:1px solid var(--line);border-radius:12px;background:#fff;padding:13px;min-height:260px}
+  .live-db-editor h3{margin:0 0 10px;font-size:16px;color:var(--ink)}
+  .live-db-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .live-db-field{display:flex;flex-direction:column;gap:4px;font-size:11px;font-weight:800;color:var(--slate);text-transform:uppercase;letter-spacing:.04em}
+  .live-db-field.wide{grid-column:1/-1}
+  .live-db-field input,.live-db-field select,.live-db-field textarea{width:100%;box-sizing:border-box;border:1.5px solid var(--line);border-radius:9px;padding:9px 10px;background:#fff;color:var(--ink);font:inherit;font-size:13px;text-transform:none;letter-spacing:normal;font-weight:500}
+  .live-db-field textarea{min-height:78px;resize:vertical}
+  .live-db-field.check{flex-direction:row;align-items:center;gap:8px;padding-top:23px}
+  .live-db-field.check input{width:auto}
+  .live-db-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .live-db-pill{display:inline-flex;padding:3px 7px;border-radius:999px;background:#e8f5ff;color:var(--blue);font-size:10px;font-weight:800;margin-left:6px}
+  .live-db-warning{background:#fff7e7;border:1px solid #f4d594;border-radius:10px;padding:9px 10px;color:#76530a;font-size:12px;margin-bottom:10px}
+  @media(max-width:760px){.live-db-layout{grid-template-columns:1fr}.live-db-list{max-height:34vh}.live-db-grid{grid-template-columns:1fr}.live-db-field.wide{grid-column:auto}}
+
 </style>
 </head>
 <body>
@@ -1105,6 +1132,7 @@
     <div id="adminMsg" style="font-size:13px;color:var(--slate);margin-bottom:8px;">Unlocked for this session.</div>
     <div class="admin-tabs">
       <button type="button" class="admin-tab" data-tab="check" aria-pressed="true">Is Everything Right?</button>
+      <button type="button" class="admin-tab" data-tab="livedb" aria-pressed="false">☁️ Live Database</button>
       <button type="button" class="admin-tab" data-tab="howto" aria-pressed="false">How To Update</button>
       <button type="button" class="admin-tab" data-tab="release" aria-pressed="false">Local Release</button>
       <button type="button" class="admin-tab" data-tab="phones" aria-pressed="false">Local Phones</button>
@@ -1117,6 +1145,35 @@
       <p class="admin-note"><b>Purpose:</b> use this area to confirm what the live tool is supposed to contain before posting a new Cloudflare deployment. This is a reference/checking area, not a live publisher.</p>
       <div id="adminCheckContent"></div>
     </section>
+
+    <section class="admin-section" data-section="livedb">
+      <div class="live-db-warning"><b>3.0 Test Admin:</b> Changes here write directly to Supabase and are immediately available to test builds reading that database. Use Active/Inactive instead of deleting whenever possible.</div>
+      <div class="live-db-toolbar">
+        <select id="liveDbTable" aria-label="Database area">
+          <option value="trade_devices">Trade-In Phones</option>
+          <option value="sellable_devices">Phones We Sell</option>
+          <option value="plans">Plans</option>
+          <option value="plan_groups">Plan Groups</option>
+          <option value="promotions">Promotions</option>
+          <option value="promotion_tiers">Trade Promo Tiers</option>
+          <option value="tiered_prices">Tiered Prices</option>
+          <option value="special_trade_rules">Special Trade Rules</option>
+          <option value="promotion_devices">Promo → Phones</option>
+          <option value="promotion_plan_groups">Promo → Plan Groups</option>
+          <option value="promo_categories">Promo Categories</option>
+          <option value="content_items">What's New / Content</option>
+        </select>
+        <input id="liveDbSearch" type="search" placeholder="Search this database…" />
+        <button type="button" id="liveDbRefresh" class="admin-btn secondary">Refresh</button>
+        <button type="button" id="liveDbAdd" class="admin-btn">+ Add</button>
+      </div>
+      <div id="liveDbStatus" class="live-db-status">Open this tab to load Supabase.</div>
+      <div class="live-db-layout">
+        <div id="liveDbList" class="live-db-list"></div>
+        <div id="liveDbEditor" class="live-db-editor"><p class="admin-note">Choose a record on the left or tap <b>+ Add</b>.</p></div>
+      </div>
+    </section>
+
     <section class="admin-section" data-section="howto">
       <p class="admin-note"><b>Purpose:</b> step-by-step guide for updating GlobalTradeTool.com using the new GitHub workflow. Once Cloudflare is connected to GitHub, code changes should be pushed to GitHub first and Cloudflare will deploy from there.</p>
       <div class="admin-subhead">Accounts</div>
@@ -1218,7 +1275,8 @@
 <script>
 (async function(){
   const VERSION = 'Version 2.01';
-  const ADMIN_PASSWORD = 'wire9393';
+  const GTT_ADMIN_FUNCTION = SUPABASE_URL + '/functions/v1/gtt-admin';
+  let adminSessionPassword = '';
   const ADMIN_STORE_KEY = 'globalTradeToolAdminData_v2_test_0200';
   const HISTORY_KEY = 'globalTradeToolHistory_v2_test';
   let releaseInfo = { version:'Version 2.01', month:'August 2026', updated:'8/13/2026' };
@@ -2904,6 +2962,266 @@
   }
 
 
+
+  // === Global Trade Tool 3.0 Live Database Admin ===
+  const LIVE_DB_CONFIG = {
+    trade_devices:{
+      title:'Trade-In Phones', pk:['id'], order:{column:'brand',ascending:true},
+      label:r=>`${r.brand||''} ${r.model||''} ${r.storage||''}`.trim(),
+      sub:r=>`Trade $${r.trade_value==null?'—':r.trade_value} · ${r.active===false?'INACTIVE':'Active'}`,
+      fields:[
+        ['brand','Brand','text'],['model','Model','text'],['storage','Storage','text'],
+        ['trade_value','Trade Value','number'],['active','Active','boolean']
+      ]
+    },
+    sellable_devices:{
+      title:'Phones We Sell', pk:['device_key'], order:{column:'name',ascending:true},
+      label:r=>`${r.name||''} ${r.storage||''}`.trim(),
+      sub:r=>`${r.device_key||''} · Retail $${r.retail_price??0} · ${r.promo_category_key||'no promo category'}`,
+      fields:[
+        ['device_key','Device Key','text'],['name','Name','text'],['storage','Storage','text'],
+        ['retail_price','Retail Price','number'],['promo_category_key','Promo Category','text'],
+        ['quick_pick','Quick Pick','boolean'],['active','Active','boolean'],
+        ['sort_order','Sort Order','number'],['notes','Notes','textarea']
+      ]
+    },
+    plans:{
+      title:'Plans', pk:['id'], order:{column:'sort_order',ascending:true},
+      label:r=>r.name||`Plan ${r.id}`,
+      sub:r=>`${r.plan_group_key||''} · ${r.segment||''} · ${r.active===false?'INACTIVE':'Active'}`,
+      fields:[
+        ['name','Plan Name','text'],['plan_group_key','Plan Group','text'],['segment','Segment','select',['consumer','cru','firstnet']],
+        ['search_aliases','Search Aliases','text'],['is_current','Current Plan','boolean'],['active','Active','boolean'],
+        ['sort_order','Sort Order','number'],['notes','Notes','textarea']
+      ]
+    },
+    plan_groups:{
+      title:'Plan Groups', pk:['group_key'], order:{column:'sort_order',ascending:true},
+      label:r=>r.display_name||r.group_key,
+      sub:r=>`${r.group_key} · ${r.promo_eligible===false?'Not promo eligible':'Promo eligible'}`,
+      fields:[
+        ['group_key','Group Key','text'],['display_name','Display Name','text'],['sort_order','Sort Order','number'],
+        ['promo_eligible','Promo Eligible','boolean'],['active','Active','boolean'],['notes','Notes','textarea']
+      ]
+    },
+    promotions:{
+      title:'Promotions', pk:['id'], order:{column:'priority',ascending:true},
+      label:r=>r.name||r.promo_key,
+      sub:r=>`${r.promo_type||''} · ${r.promo_category_key||'all categories'} · ${r.active===false?'INACTIVE':'Active'}`,
+      fields:[
+        ['promo_key','Promo Key','text'],['name','Promo Name','text'],
+        ['promo_type','Promo Type','select',['trade_in','tiered','special','full_retail']],
+        ['promo_category_key','Promo Category','text'],['starts_at','Starts At','text'],['ends_at','Ends At','text'],
+        ['active','Active','boolean'],['priority','Priority','number'],['source_version','Source Version','text'],['notes','Notes','textarea']
+      ]
+    },
+    promotion_tiers:{
+      title:'Trade Promo Tiers', pk:['id'], order:{column:'promotion_id',ascending:true},
+      label:r=>`Promo #${r.promotion_id} · ${r.plan_group_key} · $${r.credit_amount}`,
+      sub:r=>`Trade $${r.min_trade_value}+ · ${r.qualifier_type||'trade_value'} · ${r.active===false?'INACTIVE':'Active'}`,
+      fields:[
+        ['promotion_id','Promotion ID','number'],['plan_group_key','Plan Group','text'],
+        ['min_trade_value','Minimum Trade Value','number'],['credit_amount','Credit Amount','number'],
+        ['qualifier_type','Qualifier Type','text'],['qualifier_detail','Qualifier Detail','text'],
+        ['sort_order','Sort Order','number'],['active','Active','boolean']
+      ]
+    },
+    tiered_prices:{
+      title:'Tiered Prices', pk:['id'], order:{column:'device_key',ascending:true},
+      label:r=>`${r.device_key} · ${r.activation_type}`,
+      sub:r=>`${r.monthly_price==null?'N/A':'$'+r.monthly_price+'/mo'} · Promo #${r.promotion_id} · ${r.active===false?'INACTIVE':'Active'}`,
+      fields:[
+        ['promotion_id','Promotion ID','number'],['device_key','Device Key','text'],
+        ['activation_type','Activation Type','select',['new_line','upgrade']],
+        ['monthly_price','Monthly Price','number'],['months','Months','number'],['active','Active','boolean'],['notes','Notes','textarea']
+      ]
+    },
+    special_trade_rules:{
+      title:'Special Trade Rules', pk:['id'], order:{column:'rule_key',ascending:true},
+      label:r=>r.name||r.rule_key,
+      sub:r=>`${r.plan_group_key||''} · $${r.credit_amount??0} · ${r.qualifier_type||''}`,
+      fields:[
+        ['rule_key','Rule Key','text'],['name','Name','text'],['qualifier_type','Qualifier Type','text'],
+        ['qualifier_level','Qualifier Level','text'],['promo_category_key','Promo Category','text'],
+        ['device_key_prefix','Device Key Prefix','text'],['plan_group_key','Plan Group','text'],
+        ['credit_amount','Credit Amount','number'],['active','Active','boolean'],['notes','Notes','textarea']
+      ]
+    },
+    promotion_devices:{
+      title:'Promo → Phones', pk:['promotion_id','device_key'], order:{column:'promotion_id',ascending:true},
+      label:r=>`Promo #${r.promotion_id} → ${r.device_key}`,
+      sub:r=>r.active===false?'INACTIVE':'Active',
+      fields:[['promotion_id','Promotion ID','number'],['device_key','Device Key','text'],['active','Active','boolean']]
+    },
+    promotion_plan_groups:{
+      title:'Promo → Plan Groups', pk:['promotion_id','plan_group_key'], order:{column:'promotion_id',ascending:true},
+      label:r=>`Promo #${r.promotion_id} → ${r.plan_group_key}`,
+      sub:r=>r.active===false?'INACTIVE':'Active',
+      fields:[['promotion_id','Promotion ID','number'],['plan_group_key','Plan Group','text'],['active','Active','boolean']]
+    },
+    promo_categories:{
+      title:'Promo Categories', pk:['category_key'], order:{column:'sort_order',ascending:true},
+      label:r=>r.display_name||r.category_key,
+      sub:r=>`${r.category_key} · ${r.active===false?'INACTIVE':'Active'}`,
+      fields:[['category_key','Category Key','text'],['display_name','Display Name','text'],['sort_order','Sort Order','number'],['active','Active','boolean'],['notes','Notes','textarea']]
+    },
+    content_items:{
+      title:"What's New / Content", pk:['id'], order:{column:'sort_order',ascending:true},
+      label:r=>r.title||r.content_key,
+      sub:r=>`${r.content_type||''} · ${r.effective_date||''} · ${r.active===false?'INACTIVE':'Active'}`,
+      fields:[
+        ['content_key','Content Key','text'],['content_type','Type','select',['faq','tip','recent_change','announcement','disclaimer','admin_note']],
+        ['title','Title','text'],['body','Body','textarea'],['effective_date','Effective Date','text'],
+        ['active','Active','boolean'],['sort_order','Sort Order','number'],['metadata','Metadata JSON','json']
+      ]
+    }
+  };
+  let liveDbRows = [];
+  let liveDbSelected = null;
+  let liveDbMode = 'edit';
+
+  async function liveDbApi(payload){
+    if(!adminSessionPassword) throw new Error('Admin session is locked.');
+    const res = await fetch(GTT_ADMIN_FUNCTION,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-gtt-admin-password':adminSessionPassword},
+      body:JSON.stringify(payload)
+    });
+    const out = await res.json().catch(()=>({}));
+    if(!res.ok || !out.ok) throw new Error(out.error || `HTTP ${res.status}`);
+    return out.data;
+  }
+  function liveDbConfig(){ return LIVE_DB_CONFIG[el('liveDbTable').value]; }
+  function liveDbTable(){ return el('liveDbTable').value; }
+  function liveDbSetStatus(msg,bad=false){
+    const s=el('liveDbStatus'); if(!s)return; s.textContent=msg; s.style.color=bad?'#a32b2b':'var(--slate)';
+  }
+  async function liveDbLoad(){
+    const cfg=liveDbConfig(); if(!cfg)return;
+    liveDbSetStatus(`Loading ${cfg.title}…`);
+    try{
+      liveDbRows = await liveDbApi({action:'list',table:liveDbTable(),order:cfg.order,limit:2000});
+      liveDbSelected=null; liveDbMode='edit';
+      liveDbRenderList(); liveDbRenderEditor(null);
+      liveDbSetStatus(`${liveDbRows.length} records loaded from Supabase.`);
+    }catch(e){ liveDbSetStatus(e.message,true); }
+  }
+  function liveDbSearchText(r){
+    return Object.values(r||{}).filter(v=>v!==null&&v!==undefined).map(v=>typeof v==='object'?JSON.stringify(v):String(v)).join(' ').toLowerCase();
+  }
+  function liveDbRenderList(){
+    const box=el('liveDbList'); if(!box)return;
+    const cfg=liveDbConfig();
+    const q=(el('liveDbSearch').value||'').trim().toLowerCase();
+    const rows=q?liveDbRows.filter(r=>liveDbSearchText(r).includes(q)):liveDbRows;
+    box.innerHTML = rows.map((r,i)=>{
+      const realIndex=liveDbRows.indexOf(r);
+      const active = liveDbSelected===realIndex ? ' selected' : '';
+      return `<button type="button" class="live-db-row${active}" data-live-i="${realIndex}"><b>${escapeHtml(cfg.label(r))}</b><span>${escapeHtml(cfg.sub(r))}</span></button>`;
+    }).join('') || '<div style="padding:14px;color:var(--slate);font-size:13px;">No matching records.</div>';
+    box.querySelectorAll('[data-live-i]').forEach(btn=>btn.addEventListener('click',()=>{
+      liveDbSelected=Number(btn.dataset.liveI); liveDbMode='edit'; liveDbRenderList(); liveDbRenderEditor(liveDbRows[liveDbSelected]);
+    }));
+  }
+  function escapeHtml(v){ return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+  function liveDbFieldHtml(def,row,isNew){
+    const [key,label,type,opts]=def;
+    const raw=row&&row[key]!==undefined&&row[key]!==null?row[key]:'';
+    const cfg=liveDbConfig();
+    const isPk=cfg.pk.includes(key);
+    const disabled=(!isNew&&isPk)?' disabled':'';
+    if(type==='boolean'){
+      const checked=raw===true || (isNew&&raw==='') ? ' checked' : '';
+      return `<label class="live-db-field check"><input data-live-field="${key}" type="checkbox"${checked}${disabled}> ${escapeHtml(label)}</label>`;
+    }
+    if(type==='textarea'){
+      return `<label class="live-db-field wide">${escapeHtml(label)}<textarea data-live-field="${key}"${disabled}>${escapeHtml(raw)}</textarea></label>`;
+    }
+    if(type==='select'){
+      return `<label class="live-db-field">${escapeHtml(label)}<select data-live-field="${key}"${disabled}>${(opts||[]).map(o=>`<option value="${escapeHtml(o)}"${String(raw)===String(o)?' selected':''}>${escapeHtml(o)}</option>`).join('')}</select></label>`;
+    }
+    const inputType=type==='number'?'number':'text';
+    const step=type==='number'?' step="any"':'';
+    return `<label class="live-db-field">${escapeHtml(label)}<input data-live-field="${key}" type="${inputType}"${step} value="${escapeHtml(raw)}"${disabled}></label>`;
+  }
+  function liveDbRenderEditor(row){
+    const box=el('liveDbEditor'); if(!box)return;
+    const cfg=liveDbConfig();
+    const isNew=liveDbMode==='new';
+    if(!row && !isNew){
+      box.innerHTML=`<h3>${escapeHtml(cfg.title)}</h3><p class="admin-note">Choose a record on the left or tap <b>+ Add</b>.</p>`;
+      return;
+    }
+    const source=row||{};
+    box.innerHTML=`
+      <h3>${isNew?'Add':'Edit'} ${escapeHtml(cfg.title)} ${!isNew?'<span class="live-db-pill">LIVE</span>':''}</h3>
+      <div class="live-db-grid">${cfg.fields.map(f=>liveDbFieldHtml(f,source,isNew)).join('')}</div>
+      <div class="live-db-actions">
+        <button type="button" id="liveDbSave" class="admin-btn">${isNew?'Create':'Save Changes'}</button>
+        ${!isNew?'<button type="button" id="liveDbDelete" class="admin-btn danger">Delete</button>':''}
+        <button type="button" id="liveDbCancel" class="admin-btn secondary">Cancel</button>
+      </div>`;
+    el('liveDbSave').addEventListener('click',liveDbSave);
+    if(el('liveDbDelete')) el('liveDbDelete').addEventListener('click',liveDbDelete);
+    el('liveDbCancel').addEventListener('click',()=>{liveDbMode='edit';liveDbSelected=null;liveDbRenderList();liveDbRenderEditor(null);});
+  }
+  function liveDbReadForm(){
+    const cfg=liveDbConfig(); const data={};
+    cfg.fields.forEach(def=>{
+      const [key,,type]=def, input=document.querySelector(`[data-live-field="${key}"]`);
+      if(!input)return;
+      if(type==='boolean') data[key]=!!input.checked;
+      else if(type==='number') data[key]=input.value.trim()===''?null:Number(input.value);
+      else if(type==='json'){
+        const s=input.value.trim(); data[key]=s?JSON.parse(s):{};
+      } else data[key]=input.value.trim()===''?null:input.value.trim();
+    });
+    return data;
+  }
+  function liveDbFiltersFor(row){
+    const cfg=liveDbConfig(), f={};
+    cfg.pk.forEach(k=>f[k]=row[k]);
+    return f;
+  }
+  async function liveDbSave(){
+    const cfg=liveDbConfig();
+    try{
+      const data=liveDbReadForm();
+      liveDbSetStatus(liveDbMode==='new'?'Creating…':'Saving…');
+      if(liveDbMode==='new'){
+        await liveDbApi({action:'insert',table:liveDbTable(),data,changed_by:'GTT Admin'});
+      }else{
+        const original=liveDbRows[liveDbSelected];
+        await liveDbApi({action:'update',table:liveDbTable(),filters:liveDbFiltersFor(original),data,changed_by:'GTT Admin'});
+      }
+      await liveDbLoad();
+      liveDbSetStatus('Saved to Supabase. Test users will receive the change on refresh.');
+    }catch(e){ alert('Could not save: '+e.message); liveDbSetStatus(e.message,true); }
+  }
+  async function liveDbDelete(){
+    const original=liveDbRows[liveDbSelected]; if(!original)return;
+    const cfg=liveDbConfig();
+    if(!confirm(`Delete "${cfg.label(original)}" from Supabase? Deactivate instead when possible.`)) return;
+    try{
+      await liveDbApi({action:'delete',table:liveDbTable(),filters:liveDbFiltersFor(original),changed_by:'GTT Admin'});
+      await liveDbLoad(); liveDbSetStatus('Deleted from Supabase.');
+    }catch(e){ alert('Could not delete: '+e.message); liveDbSetStatus(e.message,true); }
+  }
+  function liveDbAdd(){
+    liveDbMode='new'; liveDbSelected=null; liveDbRenderList();
+    const defaults={active:true,sort_order:0,months:36,is_current:true,promo_eligible:true,quick_pick:false};
+    liveDbRenderEditor(defaults);
+  }
+  function initLiveDbAdmin(){
+    const table=el('liveDbTable'); if(!table || table.dataset.ready==='1')return;
+    table.dataset.ready='1';
+    table.addEventListener('change',liveDbLoad);
+    el('liveDbSearch').addEventListener('input',liveDbRenderList);
+    el('liveDbRefresh').addEventListener('click',liveDbLoad);
+    el('liveDbAdd').addEventListener('click',liveDbAdd);
+  }
+
+
   function buildAdminCheckContent(){
     const box = el('adminCheckContent');
     if(!box) return;
@@ -2940,7 +3258,12 @@
     renderDevStats();
     buildAdminCheckContent();
   }
-  function openAdmin(){ el('adminModal').classList.add('open'); el('adminModal').setAttribute('aria-hidden','false'); adminFill(); }
+  function openAdmin(){
+    el('adminModal').classList.add('open');
+    el('adminModal').setAttribute('aria-hidden','false');
+    adminFill();
+    initLiveDbAdmin();
+  }
   function closeAdmin(){ el('adminModal').classList.remove('open'); el('adminModal').setAttribute('aria-hidden','true'); }
   let adminUnlocked = false;
   let adminTapCount = 0;
@@ -2960,15 +3283,28 @@
     el('adminLoginModal').classList.remove('open');
     el('adminLoginModal').setAttribute('aria-hidden','true');
   }
-  function submitAdminPassword(){
+  async function submitAdminPassword(){
     const input = el('adminPasswordInput');
-    if(input.value === ADMIN_PASSWORD){
+    const btn = el('adminLoginSubmit');
+    const pw = input.value;
+    if(!pw) return;
+    if(btn) btn.disabled = true;
+    try{
+      const res = await fetch(GTT_ADMIN_FUNCTION,{
+        method:'POST',
+        headers:{'Content-Type':'application/json','x-gtt-admin-password':pw},
+        body:JSON.stringify({action:'auth'})
+      });
+      if(!res.ok) throw new Error('Unauthorized');
+      adminSessionPassword = pw;
       adminUnlocked = true;
       closeAdminLogin();
       openAdmin();
-    } else {
+    }catch(e){
       el('adminLoginError').classList.add('show');
       input.select();
+    }finally{
+      if(btn) btn.disabled = false;
     }
   }
   function handleAdminTap(e){
