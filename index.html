@@ -609,6 +609,11 @@
   .live-db-warning{background:#fff7e7;border:1px solid #f4d594;border-radius:10px;padding:9px 10px;color:#76530a;font-size:12px;margin-bottom:10px}
   @media(max-width:760px){.live-db-layout{grid-template-columns:1fr}.live-db-list{max-height:34vh}.live-db-grid{grid-template-columns:1fr}.live-db-field.wide{grid-column:auto}}
 
+
+  /* 3.0 Admin cleanup: legacy/local tools remain in DOM for compatibility but are hidden. */
+  #adminModal .admin-tab:not([data-tab="livedb"]){display:none!important;}
+  #adminModal .admin-section:not([data-section="livedb"]){display:none!important;}
+
 </style>
 </head>
 <body>
@@ -1125,14 +1130,14 @@
 <div id="adminModal" class="modal-backdrop" aria-hidden="true">
   <div class="admin-panel" role="dialog" aria-modal="true" aria-label="Admin dashboard">
     <div class="admin-head">
-      <div><div class="eyebrow">Global Trade Tool</div><h2 style="margin:0;">Admin Dashboard</h2></div>
+      <div><div class="eyebrow">Global Trade Tool 3.0</div><h2 style="margin:0;">Live Admin</h2></div>
       <button type="button" id="adminClose" class="admin-btn secondary" style="margin-left:auto;">Close</button>
       <button type="button" id="adminLock" class="admin-btn danger">Lock Admin</button>
     </div>
-    <div id="adminMsg" style="font-size:13px;color:var(--slate);margin-bottom:8px;">Unlocked for this session.</div>
+    <div id="adminMsg" style="font-size:13px;color:var(--slate);margin-bottom:8px;">Edit Supabase-backed tool data. Saving reloads the app so the newest data is pulled immediately.</div>
     <div class="admin-tabs">
-      <button type="button" class="admin-tab" data-tab="check" aria-pressed="true">Is Everything Right?</button>
-      <button type="button" class="admin-tab" data-tab="livedb" aria-pressed="false">☁️ Live Database</button>
+      <button type="button" class="admin-tab" data-tab="check" aria-pressed="false">Is Everything Right?</button>
+      <button type="button" class="admin-tab" data-tab="livedb" aria-pressed="true">☁️ Live Database</button>
       <button type="button" class="admin-tab" data-tab="howto" aria-pressed="false">How To Update</button>
       <button type="button" class="admin-tab" data-tab="release" aria-pressed="false">Local Release</button>
       <button type="button" class="admin-tab" data-tab="phones" aria-pressed="false">Local Phones</button>
@@ -1141,13 +1146,13 @@
       <button type="button" class="admin-tab" data-tab="backup" aria-pressed="false">Backup</button>
       <button type="button" class="admin-tab" data-tab="dev" aria-pressed="false">Developer</button>
     </div>
-    <section class="admin-section open" data-section="check">
+    <section class="admin-section" data-section="check">
       <p class="admin-note"><b>Purpose:</b> use this area to confirm what the live tool is supposed to contain before posting a new Cloudflare deployment. This is a reference/checking area, not a live publisher.</p>
       <div id="adminCheckContent"></div>
     </section>
 
-    <section class="admin-section" data-section="livedb">
-      <div class="live-db-warning"><b>3.0 Test Admin:</b> Changes here write directly to Supabase and are immediately available to test builds reading that database. Use Active/Inactive instead of deleting whenever possible.</div>
+    <section class="admin-section open" data-section="livedb">
+      <div class="live-db-warning"><b>Live database:</b> Save a change and the app will reload automatically. Use <b>Active / Inactive</b> instead of deleting whenever possible so promo history is preserved.</div>
       <div class="live-db-toolbar">
         <select id="liveDbTable" aria-label="Database area">
           <option value="trade_devices">Trade-In Phones</option>
@@ -3194,8 +3199,8 @@
         const original=liveDbRows[liveDbSelected];
         await liveDbApi({action:'update',table:liveDbTable(),filters:liveDbFiltersFor(original),data,changed_by:'GTT Admin'});
       }
-      await liveDbLoad();
-      liveDbSetStatus('Saved to Supabase. Test users will receive the change on refresh.');
+      liveDbSetStatus('Saved to Supabase. Reloading Global Trade Tool…');
+      setTimeout(()=>window.location.reload(), 350);
     }catch(e){ alert('Could not save: '+e.message); liveDbSetStatus(e.message,true); }
   }
   async function liveDbDelete(){
@@ -3204,7 +3209,8 @@
     if(!confirm(`Delete "${cfg.label(original)}" from Supabase? Deactivate instead when possible.`)) return;
     try{
       await liveDbApi({action:'delete',table:liveDbTable(),filters:liveDbFiltersFor(original),changed_by:'GTT Admin'});
-      await liveDbLoad(); liveDbSetStatus('Deleted from Supabase.');
+      liveDbSetStatus('Deleted from Supabase. Reloading Global Trade Tool…');
+      setTimeout(()=>window.location.reload(), 350);
     }catch(e){ alert('Could not delete: '+e.message); liveDbSetStatus(e.message,true); }
   }
   function liveDbAdd(){
@@ -3263,6 +3269,9 @@
     el('adminModal').setAttribute('aria-hidden','false');
     adminFill();
     initLiveDbAdmin();
+    document.querySelectorAll('.admin-tab').forEach(t=>t.setAttribute('aria-pressed', t.dataset.tab==='livedb'?'true':'false'));
+    document.querySelectorAll('.admin-section').forEach(sec=>sec.classList.toggle('open', sec.dataset.section==='livedb'));
+    liveDbLoad();
   }
   function closeAdmin(){ el('adminModal').classList.remove('open'); el('adminModal').setAttribute('aria-hidden','true'); }
   let adminUnlocked = false;
@@ -3343,15 +3352,22 @@
   document.querySelectorAll('[data-tools-page]').forEach(btn=>btn.addEventListener('click',()=>showToolsPage(btn.dataset.toolsPage)));
   document.querySelectorAll('[data-tools-back]').forEach(btn=>btn.addEventListener('click',()=>showToolsPage('menu')));
 
-  const WHATS_NEW_SEEN_KEY = 'globalTradeToolWhatsNew_v201' + VERSION.replace(/\s+/g,'_');
+  const WHATS_NEW_DAILY_KEY = 'globalTradeToolWhatsNewLastSeenDate';
+  function localDateKey(){
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    const day = String(d.getDate()).padStart(2,'0');
+    return `${y}-${m}-${day}`;
+  }
   function closeWhatsNew(markSeen){
     const modal = el('whatsNewModal');
-    if(markSeen) localStorage.setItem(WHATS_NEW_SEEN_KEY, '1');
+    if(markSeen) localStorage.setItem(WHATS_NEW_DAILY_KEY, localDateKey());
     modal.classList.remove('open');
     modal.setAttribute('aria-hidden','true');
   }
   function openWhatsNewIfNeeded(){
-    if(localStorage.getItem(WHATS_NEW_SEEN_KEY) === '1') return;
+    if(localStorage.getItem(WHATS_NEW_DAILY_KEY) === localDateKey()) return;
     const modal = el('whatsNewModal');
     modal.classList.add('open');
     modal.setAttribute('aria-hidden','false');
